@@ -8,14 +8,23 @@ export type Gurdian = {
   motherOccupation: string;
   motherContactNo: string;
 };
+
+export type UserName = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+};
+export type LocalGurdian = {
+  name: string;
+  occuption: string;
+  contactNo: string;
+  address: string;
+};
 export type Student = {
   id: string;
-  name: {
-    firstname: string;
-    middleName: string;
-    lastName: string;
-  };
+  name: UserName;
   gender: "male" | "female";
+  dateOfBirth?: string;
   email: string;
   constactNumber: string;
   emergencyContactNo: string;
@@ -23,4 +32,7 @@ export type Student = {
   presentAddress: string;
   permanentAddress: string;
   gurdian: Gurdian;
+  localGurdian: LocalGurdian;
+  profileImage?: string;
+  isActive: "active" | "blocked";
 };
