@@ -9,19 +9,19 @@ export type Gurdian = {
 
 export type UserName = {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
 };
 export type LocalGurdian = {
   name: string;
   occuption: string;
   contactNo: string;
-  address: string;
+  address?: string;
 };
 export type Student = {
   id: string;
   name: UserName;
-  gender: "male" | "female";
+  gender: "male" | "female" | "other";
   dateOfBirth?: string;
   email: string;
   constactNumber: string;
