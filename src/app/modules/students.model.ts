@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import validator from "validator";
+// import validator from "validator";
 import {
   Gurdian,
   LocalGurdian,
@@ -13,13 +13,13 @@ const userNameSchema = new Schema<UserName>({
     required: [true, "First Name required"],
     trim: true,
     maxlength: [20, "Name Max Length Not more then 20 characters "],
-    validate: {
-      validator: function (value: string) {
-        const firstnameStr = value.charAt(0).toUpperCase() + value.slice(1);
-        return firstnameStr === value;
-      },
-      message: "{VALUE} is not in capitalized format",
-    },
+    // validate: {
+    //   validator: function (value: string) {
+    //     const firstnameStr = value.charAt(0).toUpperCase() + value.slice(1);
+    //     return firstnameStr === value;
+    //   },
+    //   message: "{VALUE} is not in capitalized format",
+    // },
   },
   middleName: {
     type: String,
@@ -27,10 +27,10 @@ const userNameSchema = new Schema<UserName>({
   lastName: {
     type: String,
     required: [true, "Last Name required"],
-    validate: {
-      validator: (value: string) => validator.isAlpha(value),
-      message: "{VALUE}is not a valid",
-    },
+    // validate: {
+    //   validator: (value: string) => validator.isAlpha(value),
+    //   message: "{VALUE}is not a valid",
+    // },
   },
 });
 
@@ -100,6 +100,10 @@ const studentSchema = new Schema<Student>({
     type: String,
     required: [true, "Email required"],
     unique: true,
+    // validate: {
+    //   validator: (value: string) => validator.isEmail(value),
+    //   message: "{VALUE}Email fromat required @",
+    // },
   },
   constactNumber: {
     type: String,
