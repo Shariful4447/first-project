@@ -6,7 +6,7 @@ import {
   TStudent,
   StudentModel,
   TUserName,
-  studentMethods,
+  //studentMethods,
 } from "./students/students.interface";
 // schema
 const userNameSchema = new Schema<TUserName>({
@@ -78,7 +78,8 @@ const localGurdianSchema = new Schema<TLocalGurdian>({
   },
 });
 
-const studentSchema = new Schema<TStudent, StudentModel, studentMethods>({
+// const studentSchema = new Schema<TStudent, StudentModel, studentMethods>
+const studentSchema = new Schema<TStudent, StudentModel>({
   id: {
     type: String,
     required: true,
@@ -133,13 +134,18 @@ const studentSchema = new Schema<TStudent, StudentModel, studentMethods>({
     default: "active",
   },
 });
+// creating a custom static methods
+studentSchema.statics.isUserExists = async function (id: string) {
+  const existingUsers = await Student.findOne({ id });
+  return existingUsers;
+};
 
 // creating a custom instance methods
 
-studentSchema.methods.isUserExist = async function (id: string) {
-  const existingUser = await Student.findOne({ id });
-  return existingUser;
-};
+// studentSchema.methods.isUserExist = async function (id: string) {
+//   const existingUser = await Student.findOne({ id });
+//   return existingUser;
+// };
 
 // model
 
