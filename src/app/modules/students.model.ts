@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import bcrypt from "bcrypt";
 // import validator from "validator";
 import {
   TGurdian,
@@ -8,6 +9,7 @@ import {
   TUserName,
   //studentMethods,
 } from "./students/students.interface";
+import config from "../config";
 // schema
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -85,6 +87,11 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     required: true,
     unique: true,
   },
+  password: {
+    type: String,
+    required: [true, "password is required"],
+    maxlength: [20, "password cant be more than 20 character"],
+  },
   name: {
     type: userNameSchema,
     required: [true, "Name required"],
@@ -134,6 +141,25 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     default: "active",
   },
 });
+
+// pre Save middleware :will work on create and save methods
+studentSchema.pre("save", async function (next) {
+  //   console.log(this, "pre hook:we will save the data");
+  // hash password and save into db
+  const user = this;
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+  next();
+});
+// post save middleware
+studentSchema.post("save", function (doc, next) {
+  doc.password = "";
+
+  next();
+});
+
 // creating a custom static methods
 studentSchema.statics.isUserExists = async function (id: string) {
   const existingUsers = await Student.findOne({ id });
