@@ -1,13 +1,15 @@
 import { Schema, model } from "mongoose";
 // import validator from "validator";
 import {
-  Gurdian,
-  LocalGurdian,
-  Student,
-  UserName,
+  TGurdian,
+  TLocalGurdian,
+  TStudent,
+  StudentModel,
+  TUserName,
+  studentMethods,
 } from "./students/students.interface";
 // schema
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
     required: [true, "First Name required"],
@@ -34,7 +36,7 @@ const userNameSchema = new Schema<UserName>({
   },
 });
 
-const gurdianSchema = new Schema<Gurdian>({
+const gurdianSchema = new Schema<TGurdian>({
   fatherName: {
     type: String,
     required: [true, "Father Name required"],
@@ -61,7 +63,7 @@ const gurdianSchema = new Schema<Gurdian>({
   },
 });
 
-const localGurdianSchema = new Schema<LocalGurdian>({
+const localGurdianSchema = new Schema<TLocalGurdian>({
   name: {
     type: String,
     required: [true, "Name required"],
@@ -76,7 +78,7 @@ const localGurdianSchema = new Schema<LocalGurdian>({
   },
 });
 
-const studentSchema = new Schema<Student>({
+const studentSchema = new Schema<TStudent, StudentModel, studentMethods>({
   id: {
     type: String,
     required: true,
@@ -132,6 +134,13 @@ const studentSchema = new Schema<Student>({
   },
 });
 
+// creating a custom instance methods
+
+studentSchema.methods.isUserExist = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
+  return existingUser;
+};
+
 // model
 
-export const StudentModel = model<Student>("Student", studentSchema);
+export const Student = model<TStudent, StudentModel>("Student", studentSchema);
